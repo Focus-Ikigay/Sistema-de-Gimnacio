@@ -10,6 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,6 +36,7 @@ public class EntradaController {
     @Autowired
     private EntradaRepository entradaRepository;
 
+<<<<<<< HEAD
     // =============================================================
     // ====================== C R E A T E ==========================
     // ============ CREATE - Crear nueva entrada ===================
@@ -38,6 +46,17 @@ public class EntradaController {
     }
 
     @PostMapping("/pagar") // Procesar formulario y guardar nueva entrada
+=======
+    @GetMapping("/pagar")
+    public String mostrarFormularioPago(Model model) {
+        model.addAttribute("entradas", null);
+        model.addAttribute("dniBuscado", "");
+        model.addAttribute("mensajeBusqueda", "");
+        return "Pago_entrada";
+    }
+
+    @PostMapping("/pagar")
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
     public String procesarPago(
             @RequestParam("dni") String dni,
             @RequestParam("monto") double monto,
@@ -45,6 +64,7 @@ public class EntradaController {
             HttpServletResponse response) {
 
         try {
+<<<<<<< HEAD
             // Validaciones del formulario
             Preconditions.checkNotNull(dni, "DNI no debe ser nulo");
             Preconditions.checkArgument(!dni.trim().isEmpty(), "DNI no debe estar vacío");
@@ -53,6 +73,15 @@ public class EntradaController {
 
             if (!StringUtils.isNumeric(dni) || dni.length() != 8) {
                 model.addAttribute("mensaje", "❌ DNI inválido. Debe tener exactamente 8 dígitos numéricos.");
+=======
+            // Validaciones
+            Preconditions.checkNotNull(dni, "DNI no debe ser nulo");
+            Preconditions.checkArgument(!dni.trim().isEmpty(), "DNI no debe estar vacío");
+            dni = dni.trim();
+
+            if (!StringUtils.isNumeric(dni) || dni.length() != 8) {
+                model.addAttribute("mensaje", "❌ DNI inválido. Debe tener 8 dígitos numéricos.");
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
                 return "Pago_entrada";
             }
 
@@ -61,12 +90,17 @@ public class EntradaController {
                 return "Pago_entrada";
             }
 
+<<<<<<< HEAD
             // Crear objeto Entrada y guardar en la base de datos
+=======
+            // Crear y guardar entrada
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
             Entrada entrada = new Entrada();
             entrada.setDniCliente(dni);
             entrada.setMonto(monto);
             entrada.setFecha(LocalDateTime.now());
 
+<<<<<<< HEAD
             Entrada entradaGuardada = entradaRepository.save(entrada); // --> Operación CREATE
 
             logger.info("Entrada creada: ID={}, DNI={}, Monto={}", 
@@ -77,12 +111,26 @@ public class EntradaController {
             model.addAttribute("mensaje", "✅ Entrada pagada con éxito. ID: " + entradaGuardada.getId());
             model.addAttribute("dni", dni);
             model.addAttribute("monto", monto);
+=======
+            Entrada entradaGuardada = entradaRepository.save(entrada);
+            logger.info("Entrada creada: ID={}, DNI={}, Monto={}", entradaGuardada.getId(), dni, monto);
+
+            // Generar comprobante
+            generarTxtComprobante(response, dni, monto, entradaGuardada.getId());
+
+            // Configurar modelo
+            model.addAttribute("mensaje", "✅ Entrada pagada con éxito. ID: " + entradaGuardada.getId());
+            model.addAttribute("dni", dni);
+            model.addAttribute("monto", monto);
+            model.addAttribute("id", entradaGuardada.getId());
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
 
         } catch (Exception e) {
             logger.error("Error al crear entrada: ", e);
             model.addAttribute("mensaje", "❌ Error al procesar el pago: " + e.getMessage());
         }
 
+<<<<<<< HEAD
         return "Pago_entrada";
     }
 
@@ -119,12 +167,24 @@ public class EntradaController {
     }
 
     @PostMapping("/buscar") // Buscar entradas por DNI
+=======
+        // Limpiar búsqueda previa
+        model.addAttribute("entradas", null);
+        model.addAttribute("dniBuscado", "");
+        model.addAttribute("mensajeBusqueda", "");
+        
+        return "Pago_entrada";
+    }
+
+    @PostMapping("/buscar")
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
     public String buscarPorDni(
             @RequestParam("dni") String dni,
             Model model) {
 
         try {
             if (dni == null || dni.trim().isEmpty()) {
+<<<<<<< HEAD
                 model.addAttribute("mensaje", "❌ Debe ingresar un DNI para buscar.");
                 return "buscar_entradas";
             }
@@ -135,6 +195,14 @@ public class EntradaController {
             List<Entrada> entradas = entradaRepository.findByDniCliente(dni);
 
             // Consulta JPA personalizada #2 - Contar entradas por DNI
+=======
+                model.addAttribute("mensajeBusqueda", "❌ Debe ingresar un DNI para buscar.");
+                return "Pago_entrada";
+            }
+
+            dni = dni.trim();
+            List<Entrada> entradas = entradaRepository.findByDniCliente(dni);
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
             long cantidadEntradas = entradaRepository.countByDniCliente(dni);
 
             model.addAttribute("entradas", entradas);
@@ -142,19 +210,28 @@ public class EntradaController {
             model.addAttribute("cantidadEntradas", cantidadEntradas);
 
             if (entradas.isEmpty()) {
+<<<<<<< HEAD
                 model.addAttribute("mensaje", "ℹ️ No se encontraron entradas para el DNI: " + dni);
+=======
+                model.addAttribute("mensajeBusqueda", "ℹ️ No se encontraron entradas para el DNI: " + dni);
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
             } else {
                 double totalGastado = entradas.stream()
                     .mapToDouble(Entrada::getMonto)
                     .sum();
                 model.addAttribute("totalGastado", totalGastado);
+<<<<<<< HEAD
                 model.addAttribute("mensaje", "✅ Se encontraron " + entradas.size() + " entradas.");
+=======
+                model.addAttribute("mensajeBusqueda", "✅ Se encontraron " + entradas.size() + " entradas.");
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
             }
 
             logger.info("Búsqueda por DNI {}: {} resultados", dni, entradas.size());
 
         } catch (Exception e) {
             logger.error("Error al buscar por DNI: ", e);
+<<<<<<< HEAD
             model.addAttribute("mensaje", "❌ Error en la búsqueda: " + e.getMessage());
         }
 
@@ -267,19 +344,54 @@ public class EntradaController {
     // ========== DELETE - Eliminar entrada ========================
     @PostMapping("/eliminar/{id}")
     public String eliminarEntrada(@PathVariable Long id, Model model) {
+=======
+            model.addAttribute("mensajeBusqueda", "❌ Error en la búsqueda: " + e.getMessage());
+        }
+
+        return "Pago_entrada";
+    }
+
+    @PostMapping("/eliminar")
+    public String eliminarEntrada(
+            @RequestParam("id") Long id,
+            @RequestParam("dniBuscado") String dniBuscado,
+            Model model) {
+        
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
         try {
             Optional<Entrada> entradaOpt = entradaRepository.findById(id);
 
             if (entradaOpt.isPresent()) {
+<<<<<<< HEAD
                 entradaRepository.deleteById(id); // --> Operación DELETE
                 logger.info("Entrada eliminada: ID={}", id);
                 model.addAttribute("mensaje", "✅ Entrada eliminada correctamente.");
             } else {
                 model.addAttribute("mensaje", "❌ Entrada no encontrada con ID: " + id);
+=======
+                entradaRepository.deleteById(id);
+                logger.info("Entrada eliminada: ID={}", id);
+                
+                // Volver a cargar los resultados de búsqueda
+                List<Entrada> entradas = entradaRepository.findByDniCliente(dniBuscado);
+                model.addAttribute("entradas", entradas);
+                model.addAttribute("dniBuscado", dniBuscado);
+                model.addAttribute("mensajeBusqueda", "✅ Entrada eliminada correctamente.");
+                
+                if (!entradas.isEmpty()) {
+                    double totalGastado = entradas.stream()
+                        .mapToDouble(Entrada::getMonto)
+                        .sum();
+                    model.addAttribute("totalGastado", totalGastado);
+                }
+            } else {
+                model.addAttribute("mensajeBusqueda", "❌ Entrada no encontrada con ID: " + id);
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
             }
 
         } catch (Exception e) {
             logger.error("Error al eliminar entrada: ", e);
+<<<<<<< HEAD
             model.addAttribute("mensaje", "❌ Error al eliminar entrada: " + e.getMessage());
         }
 
@@ -288,6 +400,14 @@ public class EntradaController {
 
     // =============================================================
     // ========== Generación de comprobante en .txt ================
+=======
+            model.addAttribute("mensajeBusqueda", "❌ Error al eliminar entrada: " + e.getMessage());
+        }
+
+        return "Pago_entrada";
+    }
+
+>>>>>>> fcbb111 (version 3-3 sistema de gimnacios)
     private void generarTxtComprobante(HttpServletResponse response, String dni, double monto, Long entradaId) throws IOException {
         LocalDateTime ahora = LocalDateTime.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");

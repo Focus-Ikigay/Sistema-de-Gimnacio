@@ -5,25 +5,48 @@
     <title th:text="#{pago.titulo}">Pagar Entrada - Home Fitness</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-	<style>
-		.sidebar {
-  		min-height: calc(100vh - 56px);
-  		background-color: #212529;
-	}
+    <style>
+        .sidebar {
+            min-height: calc(100vh - 56px);
+            background-color: #212529;
+        }
 
-	.sidebar-item {
-	  border-radius: 0;
-	  color: rgba(255, 255, 255, 0.8);
-	  border-left: 4px solid transparent;
-	}
+        .sidebar-item {
+            border-radius: 0;
+            color: rgba(255, 255, 255, 0.8);
+            border-left: 4px solid transparent;
+        }
 
-	.sidebar-item:hover,
-	.sidebar-item.active {
-	  background-color: rgba(255, 255, 255, 0.1);
-	  color: white;
-	  border-left-color: #4e73df;
-	}
-	</style>
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: #4e73df;
+        }
+        
+        .search-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+        }
+        
+        .table-responsive {
+            margin-top: 15px;
+        }
+        
+        .resultados-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .comprobante-link {
+            cursor: pointer;
+            color: #0d6efd;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column">
 
@@ -169,7 +192,7 @@
 
     <!-- FORMULARIO contenido principal -->
     <div class="col-lg-10 d-flex align-items-center justify-content-center bg-light" style="min-height: calc(100vh - 56px);">
-      <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+      <div class="card shadow-lg p-4" style="max-width: 800px; width: 100%;">
         <h2 class="text-center text-primary mb-4">
           <i class="fas fa-money-bill-wave me-2"></i>
           <span th:text="#{pago.titulo}">Pagar Entrada</span>
@@ -198,11 +221,78 @@
           </div>
         </form>
 
-        <!-- Mensaje -->
+        <!-- Mensaje de pago -->
         <div th:if="${mensaje}" class="alert alert-success mt-4">
           <p th:text="${mensaje}"></p>
           <p><strong th:text="#{pago.mensaje.dni}">DNI:</strong> <span th:text="${dni}"></span></p>
           <p><strong th:text="#{pago.mensaje.monto}">Monto:</strong> S/ <span th:text="${monto}"></span></p>
+          <p th:if="${id}">
+            <a th:href="@{/entrada/pagar?id={id}(id=${id})}" 
+               class="comprobante-link" 
+               onclick="this.href += '&dni=' + encodeURIComponent(document.getElementById('dni').value) + '&monto=' + document.getElementById('monto').value">
+              <i class="fas fa-download me-1"></i> Descargar comprobante
+            </a>
+          </p>
+        </div>
+        
+        <!-- Sección de búsqueda -->
+        <div class="search-section">
+            <h4 class="text-center mb-3"><i class="fas fa-search me-2"></i>Buscar Entradas</h4>
+            <form th:action="@{/entrada/buscar}" method="post" class="mb-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="dni" 
+                           th:value="${dniBuscado}" 
+                           placeholder="Ingrese DNI del cliente" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search me-1"></i> Buscar
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Mensaje de búsqueda -->
+            <div th:if="${mensajeBusqueda}" class="alert" 
+                 th:classappend="${mensajeBusqueda.startsWith('✅') ? 'alert-success' : 
+                                 (mensajeBusqueda.startsWith('❌') ? 'alert-danger' : 'alert-info')}">
+                <span th:text="${mensajeBusqueda}"></span>
+            </div>
+            
+            <!-- Resultados de búsqueda -->
+            <div th:if="${entradas != null}" class="resultados-container">
+                <div th:if="${!entradas.empty}" class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>DNI Cliente</th>
+                                <th>Monto</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="entrada : ${entradas}">
+                                <td th:text="${entrada.id}"></td>
+                                <td th:text="${entrada.dniCliente}"></td>
+                                <td>S/ <span th:text="${#numbers.formatDecimal(entrada.monto, 1, 2)}"></span></td>
+                                <td th:text="${#temporals.format(entrada.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+                                <td>
+                                    <form th:action="@{/entrada/eliminar}" method="post" style="display: inline;">
+                                        <input type="hidden" name="id" th:value="${entrada.id}">
+                                        <input type="hidden" name="dniBuscado" th:value="${dniBuscado}">
+                                        <button type="submit" class="btn btn-danger btn-sm" 
+                                                onclick="return confirm('¿Está seguro de eliminar esta entrada?')">
+                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div th:if="${totalGastado}" class="mt-2 text-end fw-bold">
+                        Total gastado: S/ <span th:text="${#numbers.formatDecimal(totalGastado, 1, 2)}"></span>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </div>
@@ -210,6 +300,20 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Función para manejar la descarga del comprobante
+    document.addEventListener('DOMContentLoaded', function() {
+        const comprobanteLinks = document.querySelectorAll('.comprobante-link');
+        comprobanteLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const dni = document.getElementById('dni').value;
+                const monto = document.getElementById('monto').value;
+                const url = this.href + '&dni=' + encodeURIComponent(dni) + '&monto=' + monto;
+                window.location.href = url;
+            });
+        });
+    });
+</script>
 </body>
 </html>
-
