@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title/text()}, ~{::section})}">
+<head>
+    <title>Lista de Usuarios</title>
+</head>
+<body>
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-users text-primary"></i>
+                <span th:if="${busqueda}">Resultados de búsqueda</span>
+                <span th:unless="${busqueda}">Lista de Usuarios</span>
+                <span class="badge bg-secondary ms-2" th:text="${totalUsuarios}">0</span>
+            </h2>
+            <a href="/usuarios/nuevo" class="btn btn-success">
+                <i class="fas fa-plus"></i> Nuevo Usuario
+            </a>
+        </div>
+        
+        <!-- Formulario de búsqueda -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form action="/usuarios/buscar" method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Criterio de búsqueda:</label>
+                        <select name="criterio" class="form-select">
+                            <option value="nombre" th:selected="${criterio == 'nombre'}">Nombre</option>
+                            <option value="email" th:selected="${criterio == 'email'}">Email</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Valor:</label>
+                        <input type="text" name="valor" class="form-control" th:value="${valor}" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary d-block w-100">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                    </div>
+                </form>
+                <div th:if="${busqueda}" class="mt-2">
+                    <a href="/usuarios" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-times"></i> Limpiar búsqueda
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabla de usuarios -->
+        <div class="card">
+            <div class="card-body">
+                <div th:if="${usuarios.empty}" class="text-center py-4">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No hay usuarios registrados</h5>
+                    <p class="text-muted">Comienza agregando tu primer usuario</p>
+                </div>
+                
+                <div th:unless="${usuarios.empty}">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="usuario : ${usuarios}">
+                                    <td th:text="${usuario.id}">1</td>
+                                    <td>
+                                        <i class="fas fa-user text-primary me-1"></i>
+                                        <span th:text="${usuario.nombre}">Nombre</span>
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-envelope text-info me-1"></i>
+                                        <span th:text="${usuario.email}">email@ejemplo.com</span>
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-phone text-success me-1"></i>
+                                        <span th:text="${usuario.telefono ?: 'No especificado'}">Teléfono</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}" 
+                                               class="btn btn-sm btn-outline-primary" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a th:href="@{/usuarios/eliminar/{id}(id=${usuario.id})}" 
+                                               class="btn btn-sm btn-outline-danger" 
+                                               title="Eliminar"
+                                               onclick="return confirm('¿Estás seguro de eliminar este usuario?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

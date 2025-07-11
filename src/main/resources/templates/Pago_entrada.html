@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pago.titulo}">Pagar Entrada - Home Fitness</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+	<style>
+		.sidebar {
+  		min-height: calc(100vh - 56px);
+  		background-color: #212529;
+	}
+
+	.sidebar-item {
+	  border-radius: 0;
+	  color: rgba(255, 255, 255, 0.8);
+	  border-left: 4px solid transparent;
+	}
+
+	.sidebar-item:hover,
+	.sidebar-item.active {
+	  background-color: rgba(255, 255, 255, 0.1);
+	  color: white;
+	  border-left-color: #4e73df;
+	}
+	</style>
+</head>
+<body class="d-flex flex-column">
+
+<!-- NAVBAR superior -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+      <i class="fas fa-dumbbell me-2"></i>
+      <span th:text="#{nav.logo}">Home Fitness</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <!-- Buscador -->
+      <form class="d-flex ms-auto me-3">
+        <div class="input-group">
+          <input class="form-control" type="search" th:placeholder="#{nav.buscador.placeholder}" aria-label="Buscar">
+          <button class="btn btn-outline-light" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+
+      <!-- Notificaciones y Perfil -->
+      <ul class="navbar-nav">
+        <!-- Notificaciones -->
+        <li class="nav-item dropdown me-2">
+          <a class="nav-link dropdown-toggle position-relative" href="#" id="notificacionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-bell"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              3
+            </span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacionesDropdown">
+            <li><h6 class="dropdown-header" th:text="#{nav.notificaciones.titulo}">Centro de Notificaciones</h6></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-user-plus me-2 text-primary"></i><span th:text="#{nav.notificaciones.nuevo_cliente}">Nuevo registro de cliente</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-exclamation-triangle me-2 text-warning"></i><span th:text="#{nav.notificaciones.stock_bajo}">Stock bajo de proteínas</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-dollar-sign me-2 text-success"></i><span th:text="#{nav.notificaciones.nuevo_pago}">Nuevo pago recibido</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-center small" href="#" th:text="#{nav.notificaciones.ver_todas}">Mostrar todas las notificaciones</a></li>
+          </ul>
+        </li>
+
+        <!-- Perfil -->
+        <li class="nav-item dropdown profile-dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="perfilDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="me-2 d-none d-lg-inline text-white small" th:text="#{nav.usuario}">Admin</span>
+            <i class="fas fa-user-circle fa-lg"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="perfilDropdown">
+            <li><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm me-2 text-gray-400"></i><span th:text="#{nav.perfil.perfil}">Perfil</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm me-2 text-gray-400"></i><span th:text="#{nav.perfil.configuracion}">Configuración</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm me-2 text-gray-400"></i><span th:text="#{nav.perfil.registro}">Registro actividad</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm me-2 text-gray-400"></i><span th:text="#{nav.perfil.cerrar_sesion}">Cerrar sesión</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- CONTENIDO -->
+<div class="container-fluid">
+  <div class="row">
+  
+    <!-- SIDEBAR izquierdo -->
+    <div class="col-lg-2 px-0 d-none d-lg-block">
+      <div class="sidebar py-3">
+        <div class="text-center my-4">
+          <img src="https://via.placeholder.com/60" alt="Logo" class="rounded-circle mb-2">
+          <h6 class="text-white mb-0" th:text="#{sidebar.titulo}">Sistema de Gestión</h6>
+        </div>
+
+        <hr class="bg-light mx-3">
+
+        <ul class="nav flex-column mt-2">
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="/">
+              <i class="fas fa-fw fa-tachometer-alt me-2"></i>
+              <span th:text="#{sidebar.dashboard}">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="/Registro_Cliente">
+              <i class="fas fa-fw fa-user-plus me-2"></i>
+              <span th:text="#{sidebar.registro_cliente}">Registro Cliente</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="/Pago_entrada">
+              <i class="fas fa-fw fa-money-bill me-2"></i>
+              <span th:text="#{sidebar.pagos_entrada}">Pagos Entrada</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="/Asignar_menbresia">
+              <i class="fas fa-fw fa-id-card me-2"></i>
+              <span th:text="#{sidebar.membresias}">Membresías</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="/Inventario">
+              <i class="fas fa-fw fa-boxes me-2"></i>
+              <span th:text="#{sidebar.inventario}">Inventario</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="/finanzas">
+              <i class="fas fa-fw fa-chart-line me-2"></i>
+              <span th:text="#{sidebar.finanzas}">Finanzas</span>
+            </a>
+          </li>
+
+          <li class="nav-item mt-3">
+            <hr class="bg-light mx-3">
+            <h6 class="text-white-50 small px-3 mb-2" th:text="#{sidebar.herramientas}">HERRAMIENTAS</h6>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="#">
+              <i class="fas fa-fw fa-calendar me-2"></i>
+              <span th:text="#{sidebar.agenda}">Agenda</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="/Empleados">
+              <i class="fas fa-fw fa-users me-2"></i>
+              <span th:text="#{sidebar.empleados}">Empleados</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="#">
+              <i class="fas fa-fw fa-cog me-2"></i>
+              <span th:text="#{sidebar.configuracion}">Configuración</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FORMULARIO contenido principal -->
+    <div class="col-lg-10 d-flex align-items-center justify-content-center bg-light" style="min-height: calc(100vh - 56px);">
+      <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center text-primary mb-4">
+          <i class="fas fa-money-bill-wave me-2"></i>
+          <span th:text="#{pago.titulo}">Pagar Entrada</span>
+        </h2>
+
+        <form th:action="@{/entrada/pagar}" method="post">
+          <div class="mb-3">
+            <label for="dni" class="form-label" th:text="#{pago.form.dni}">DNI del Cliente:</label>
+            <input type="text" class="form-control" id="dni" name="dni" th:placeholder="#{pago.form.dni.placeholder}" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="monto" class="form-label" th:text="#{pago.form.monto}">Monto de Entrada (S/):</label>
+            <input type="number" step="0.01" class="form-control" id="monto" name="monto" th:placeholder="#{pago.form.monto.placeholder}" required>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-check-circle me-1"></i>
+              <span th:text="#{pago.boton.pagar}">Pagar Entrada</span>
+            </button>
+            <a th:href="@{/principal.html}" class="btn btn-outline-secondary">
+              <i class="fas fa-arrow-left me-1"></i>
+              <span th:text="#{pago.boton.volver}">Volver al inicio</span>
+            </a>
+          </div>
+        </form>
+
+        <!-- Mensaje -->
+        <div th:if="${mensaje}" class="alert alert-success mt-4">
+          <p th:text="${mensaje}"></p>
+          <p><strong th:text="#{pago.mensaje.dni}">DNI:</strong> <span th:text="${dni}"></span></p>
+          <p><strong th:text="#{pago.mensaje.monto}">Monto:</strong> S/ <span th:text="${monto}"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

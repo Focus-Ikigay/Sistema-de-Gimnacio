@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title/text()}, ~{::section})}">
+<head>
+    <title th:text="${usuario.id != null ? 'Editar Usuario' : 'Nuevo Usuario'}">Usuario</title>
+</head>
+<body>
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-user-edit text-primary"></i>
+                <span th:text="${usuario.id != null ? 'Editar Usuario' : 'Nuevo Usuario'}">Usuario</span>
+            </h2>
+            <a href="/usuarios" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form th:action="@{/usuarios/guardar}" th:object="${usuario}" method="post">
+                            <input type="hidden" th:field="*{id}">
+                            
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">
+                                    <i class="fas fa-user text-primary"></i> Nombre *
+                                </label>
+                                <input type="text" th:field="*{nombre}" class="form-control" 
+                                       id="nombre" required maxlength="100"
+                                       placeholder="Ingrese el nombre completo">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope text-info"></i> Email *
+                                </label>
+                                <input type="email" th:field="*{email}" class="form-control" 
+                                       id="email" required maxlength="150"
+                                       placeholder="ejemplo@correo.com">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">
+                                    <i class="fas fa-phone text-success"></i> Teléfono
+                                </label>
+                                <input type="tel" th:field="*{telefono}" class="form-control" 
+                                       id="telefono" maxlength="20"
+                                       placeholder="Número de teléfono (opcional)">
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/usuarios" class="btn btn-outline-secondary me-md-2">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    <span th:text="${usuario.id != null ? 'Actualizar' : 'Guardar'}">Guardar</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

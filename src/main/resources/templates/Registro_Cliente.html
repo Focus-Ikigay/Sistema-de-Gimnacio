@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro Cliente - Home Fitness</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .dashboard-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .stat-card {
+      border-left: 4px solid;
+      border-radius: 4px;
+    }
+    .bg-gradient-primary {
+      background: linear-gradient(45deg, #4e73df, #224abe);
+    }
+    .bg-gradient-success {
+      background: linear-gradient(45deg, #1cc88a, #13855c);
+    }
+    .bg-gradient-info {
+      background: linear-gradient(45deg, #36b9cc, #258391);
+    }
+    .bg-gradient-warning {
+      background: linear-gradient(45deg, #f6c23e, #dda20a);
+    }
+    .sidebar {
+      min-height: calc(100vh - 56px);
+      background-color: #212529;
+    }
+    .sidebar-item {
+      border-radius: 0;
+      color: rgba(255, 255, 255, 0.8);
+      border-left: 4px solid transparent;
+    }
+    .sidebar-item:hover, .sidebar-item.active {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-left-color: #4e73df;
+    }
+    .main-content {
+      min-height: calc(100vh - 56px);
+    }
+    .profile-dropdown .dropdown-toggle::after {
+      display: none;
+    }
+    .footer {
+      background-color: #f8f9fc;
+      padding: 1rem 0;
+      margin-top: auto;
+    }
+    .form-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+      padding: 1.5rem;
+    }
+    .form-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background-color: #4e73df;
+      color: white;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .input-group-text {
+      background-color: #f8f9fc;
+      border-right: none;
+    }
+    .form-control {
+      border-left: none;
+    }
+    .form-control:focus {
+      box-shadow: none;
+      border-color: #d1d3e2;
+    }
+    .input-group .form-control:focus + .input-group-text {
+      border-color: #d1d3e2;
+    }
+  </style>
+</head>
+<body class="d-flex flex-column">
+
+  <!-- Navbar Superior -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="../">
+      <i class="fas fa-dumbbell me-2"></i>
+      <span>Home Fitness</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <!-- Buscador -->
+      <form class="d-flex ms-auto me-3">
+        <div class="input-group">
+          <input class="form-control" type="search" th:placeholder="#{navbar.buscador.placeholder}" aria-label="Buscar">
+          <button class="btn btn-outline-light" type="submit">
+            <i class="fas fa-search"></i>
+            <span th:text="#{navbar.buscador.boton}" class="d-none"></span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Notificaciones y Perfil -->
+      <ul class="navbar-nav">
+        <!-- Notificaciones -->
+        <li class="nav-item dropdown me-2">
+          <a class="nav-link dropdown-toggle position-relative" href="#" id="notificacionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-bell"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacionesDropdown">
+            <li><h6 class="dropdown-header" th:text="#{navbar.notificaciones.titulo}">Centro de Notificaciones</h6></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-user-plus me-2 text-primary"></i><span th:text="#{navbar.notificaciones.cliente}">Nuevo registro de cliente</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-exclamation-triangle me-2 text-warning"></i><span th:text="#{navbar.notificaciones.stock}">Stock bajo de proteínas</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-dollar-sign me-2 text-success"></i><span th:text="#{navbar.notificaciones.pago}">Nuevo pago recibido</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-center small" href="#" th:text="#{navbar.notificaciones.ver_todas}">Mostrar todas las notificaciones</a></li>
+          </ul>
+        </li>
+
+        <!-- Perfil -->
+        <li class="nav-item dropdown profile-dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="perfilDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="me-2 d-none d-lg-inline text-white small" th:text="#{navbar.perfil.nombre}">Admin</span>
+            <i class="fas fa-user-circle fa-lg"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="perfilDropdown">
+            <li><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm me-2 text-gray-400"></i><span th:text="#{navbar.perfil.perfil}">Perfil</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm me-2 text-gray-400"></i><span th:text="#{navbar.perfil.configuracion}">Configuración</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm me-2 text-gray-400"></i><span th:text="#{navbar.perfil.actividad}">Registro actividad</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm me-2 text-gray-400"></i><span th:text="#{navbar.perfil.cerrar_sesion}">Cerrar sesión</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar / Menú lateral -->
+    <div class="col-lg-2 px-0 d-none d-lg-block">
+      <div class="sidebar py-3">
+        <div class="text-center my-4">
+          <img src="https://via.placeholder.com/60" alt="Logo" class="rounded-circle mb-2">
+          <h6 class="text-white mb-0" th:text="#{sidebar.logo}">Sistema de Gestión</h6>
+        </div>
+
+        <hr class="bg-light mx-3">
+
+        <<ul class="nav flex-column mt-2">
+  <li class="nav-item">
+    <a class="nav-link sidebar-item" th:href="@{/}">
+      <i class="fas fa-fw fa-tachometer-alt me-2"></i>
+      <span th:text="#{sidebar.dashboard}">Dashboard</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link sidebar-item active" th:href="@{/Registro_Cliente}">
+      <i class="fas fa-fw fa-user-plus me-2"></i>
+      <span th:text="#{sidebar.registro_cliente}">Registro Cliente</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link sidebar-item" th:href="@{/Pago_entrada}">
+      <i class="fas fa-fw fa-money-bill me-2"></i>
+      <span th:text="#{sidebar.pagos_entrada}">Pagos Entrada</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link sidebar-item" th:href="@{/Asignar_menbresia}">
+      <i class="fas fa-fw fa-id-card me-2"></i>
+      <span th:text="#{sidebar.membresias}">Membresías</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link sidebar-item" th:href="@{/Inventario}">
+      <i class="fas fa-fw fa-boxes me-2"></i>
+      <span th:text="#{sidebar.inventario}">Inventario</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link sidebar-item" th:href="@{/finanzas}">
+      <i class="fas fa-fw fa-chart-line me-2"></i>
+      <span th:text="#{sidebar.finanzas}">Finanzas</span>
+    </a>
+  </li>
+
+          <li class="nav-item mt-3">
+            <hr class="bg-light mx-3">
+            <h6 class="text-white-50 small px-3 mb-2" th:text="#{sidebar.herramientas}">HERRAMIENTAS</h6>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="#">
+              <i class="fas fa-fw fa-calendar me-2"></i>
+              <span th:text="#{sidebar.agenda}">Agenda</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="/Empleados">
+              <i class="fas fa-fw fa-users me-2"></i>
+              <span th:text="#{sidebar.empleados}">Empleados</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link sidebar-item" href="#">
+              <i class="fas fa-fw fa-cog me-2"></i>
+              <span th:text="#{sidebar.configuracion}">Configuración</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+     <!-- Contenido principal -->
+<div class="col-lg-10 main-content bg-light">
+  <div class="container-fluid py-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800" th:text="#{titulo.registro.cliente}">Registro de Nuevo Cliente</h1>
+      <ol class="breadcrumb bg-transparent m-0 p-0">
+        <li class="breadcrumb-item"><a href="../principal.html" th:text="#{menu.dashboard}">Dashboard</a></li>
+        <li class="breadcrumb-item active" th:text="#{menu.registro.cliente}">Registro de Cliente</li>
+      </ol>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-xl-8 col-lg-10 mx-auto">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-white">
+            <h6 class="m-0 font-weight-bold text-primary" th:text="#{form.titulo.informacion}">Información del Cliente</h6>
+            <div class="dropdown no-arrow">
+              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="#" th:text="#{form.importar.datos}">Importar datos</a></li>
+                <li><a class="dropdown-item" href="#" th:text="#{form.exportar.formulario}">Exportar formulario</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" th:text="#{form.ayuda}">Ayuda</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <div class="form-icon mx-auto">
+                <i class="fas fa-user-plus"></i>
+              </div>
+              <p class="text-muted" th:text="#{form.instrucciones}">
+                Complete el formulario con la información del cliente. Los campos marcados con * son obligatorios.
+              </p>
+            </div>
+            
+            
+            <form id="formCliente" class="needs-validation" th:action="@{/registrarCliente}" method="post" th:object="${cliente}" novalidate>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="nombre" class="form-label" th:text="#{form.nombre}">Nombre completo *</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-user"></i></span>
+        <input type="text" class="form-control" id="nombre" th:field="*{nombreCompleto}" th:placeholder="#{form.nombre.placeholder}" required>
+        <div class="invalid-feedback" th:text="#{validacion.nombre}">Por favor, ingrese el nombre completo.</div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="dni" class="form-label" th:text="#{form.dni}">DNI / Documento *</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+        <input type="text" class="form-control" id="dni" th:field="*{dni}" th:placeholder="#{form.dni.placeholder}" maxlength="8" required>
+        <div class="invalid-feedback" th:text="#{validacion.dni}">Por favor, ingrese un DNI válido.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="telefono" class="form-label" th:text="#{form.telefono}">Teléfono *</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+        <input type="tel" class="form-control" id="telefono" th:field="*{telefono}" th:placeholder="#{form.telefono.placeholder}" required>
+        <div class="invalid-feedback" th:text="#{validacion.telefono}">Por favor, ingrese un teléfono válido.</div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="correo" class="form-label" th:text="#{form.correo}">Correo electrónico</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+        <input type="email" class="form-control" id="correo" th:field="*{correo}" th:placeholder="#{form.correo.placeholder}">
+        <div class="invalid-feedback" th:text="#{validacion.correo}">Por favor, ingrese un correo válido.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="sexo" class="form-label" th:text="#{form.sexo}">Sexo *</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+        <select class="form-select" id="sexo" th:field="*{sexo}" required>
+          <option value="" selected disabled th:text="#{form.seleccionar}">Seleccionar</option>
+          <option value="Masculino" th:text="#{sexo.masculino}">Masculino</option>
+          <option value="Femenino" th:text="#{sexo.femenino}">Femenino</option>
+        </select>
+        <div class="invalid-feedback" th:text="#{validacion.sexo}">Por favor, seleccione una opción.</div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="fechaNacimiento" class="form-label" th:text="#{form.fecha.nacimiento}">Fecha de nacimiento</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+        <input type="date" class="form-control" id="fechaNacimiento" th:field="*{fechaNacimiento}">
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="direccion" class="form-label" th:text="#{form.direccion}">Dirección</label>
+    <div class="input-group">
+      <span class="input-group-text"><i class="fas fa-home"></i></span>
+      <input type="text" class="form-control" id="direccion" th:field="*{direccion}" th:placeholder="#{form.direccion.placeholder}">
+    </div>
+  </div>
+
+  <div class="collapse" id="collapseCondicion">
+    <div class="card card-body mb-3 bg-light">
+      <div class="mb-3">
+        <label for="condicionMedica" class="form-label" th:text="#{form.descripcion.condicion}">Describa la condición médica</label>
+        <textarea class="form-control" id="condicionMedica" th:field="*{condicionMedica}" rows="2"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapse" id="collapseEmergencia">
+    <div class="card card-body mb-3 bg-light">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="nombreEmergencia" class="form-label" th:text="#{form.nombre.emergencia}">Nombre de contacto</label>
+          <input type="text" class="form-control" id="nombreEmergencia" th:field="*{nombreEmergencia}">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="telefonoEmergencia" class="form-label" th:text="#{form.telefono.emergencia}">Teléfono de contacto</label>
+          <input type="tel" class="form-control" id="telefonoEmergencia" th:field="*{telefonoEmergencia}">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group mb-4">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="terminosCheck" required>
+      <label class="form-check-label" for="terminosCheck">
+        <span th:utext="#{form.terminos.label}">Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#terminosModal">términos y condiciones</a> y la política de privacidad.</span>
+      </label>
+      <div class="invalid-feedback" th:text="#{validacion.terminos}">
+        Debe aceptar los términos antes de registrar.
+      </div>
+    </div>
+  </div>
+
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button type="button" class="btn btn-outline-secondary me-md-2" onclick="window.location.href='../principal.html'">
+      <i class="fas fa-times me-1"></i> <span th:text="#{boton.cancelar}">Cancelar</span>
+    </button>
+    <button type="submit" class="btn btn-primary">
+      <i class="fas fa-save me-1"></i> <span th:text="#{boton.registrar}">Registrar cliente</span>
+    </button>
+  </div>
+</form>
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!-- Footer -->
+<footer class="footer mt-auto">
+  <div class="container-fluid">
+    <div class="text-center">
+      <span class="text-muted" th:text="#{footer.derechos}">&copy; 2025 Home Fitness. Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Modal de términos y condiciones -->
+<div class="modal fade" id="terminosModal" tabindex="-1" aria-labelledby="terminosModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="terminosModalLabel" th:text="#{modal.terminos.titulo}">Términos y Condiciones - Home Fitness</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5 th:text="#{modal.terminos.sub.privacidad}">Política de privacidad y uso de datos</h5>
+        <p th:text="#{modal.terminos.aceptacion}">Al registrarse...</p>
+        <ul>
+          <li th:text="#{modal.terminos.uso1}">Sus datos personales serán almacenados...</li>
+          <li th:text="#{modal.terminos.uso2}">La información proporcionada será utilizada...</li>
+          <li th:text="#{modal.terminos.uso3}">No compartiremos su información...</li>
+          <li th:text="#{modal.terminos.uso4}">Puede solicitar la eliminación de sus datos...</li>
+        </ul>
+
+        <h5 th:text="#{modal.terminos.sub.reglas}">Reglamento del gimnasio</h5>
+        <p th:text="#{modal.terminos.compromiso}">Como cliente de Home Fitness...</p>
+        <ul>
+          <li th:text="#{modal.terminos.regla1}">Respetar las instalaciones...</li>
+          <li th:text="#{modal.terminos.regla2}">Cumplir con las normas de higiene...</li>
+          <li th:text="#{modal.terminos.regla3}">Informar sobre cualquier incidente...</li>
+          <li th:text="#{modal.terminos.regla4}">Respetar a otros usuarios...</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" th:text="#{modal.terminos.boton}">Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de éxito -->
+<div class="modal fade" id="modalExito" tabindex="-1" aria-labelledby="modalExitoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="modalExitoLabel" th:text="#{modal.exito.titulo}">¡Registro exitoso!</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <i class="fas fa-check-circle text-success fa-4x mb-3"></i>
+          <h5 th:text="#{modal.exito.subtitulo}">Cliente registrado correctamente</h5>
+          <p class="mb-0" th:text="#{modal.exito.mensaje}">Los datos han sido guardados...</p>
+        </div>
+        <div class="alert alert-info">
+          <div class="d-flex">
+            <i class="fas fa-info-circle fa-lg me-2 mt-1"></i>
+            <div>
+              <strong th:text="#{modal.exito.proximos}">Próximos pasos:</strong>
+              <ul class="mb-0 mt-1">
+                <li th:text="#{modal.exito.paso1}">Asignar una membresía</li>
+                <li th:text="#{modal.exito.paso2}">Tomar foto para carnet</li>
+                <li th:text="#{modal.exito.paso3}">Programar evaluación física</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{modal.exito.boton.cerrar}">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="window.location.href='/Asignar_menbresia'">
+          <i class="fas fa-id-card me-1"></i> <span th:text="#{modal.exito.boton.asignar}">Asignar membresía</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+	  // Validación del formulario
+	  (function() {
+	    'use strict';
+	    window.addEventListener('load', function() {
+	      var forms = document.getElementsByClassName('needs-validation');
+	      Array.prototype.filter.call(forms, function(form) {
+	        form.addEventListener('submit', function(event) {
+	          if (form.checkValidity() === false) {
+	            event.preventDefault();
+	            event.stopPropagation();
+	          }
+	          form.classList.add('was-validated');
+	        }, false);
+	      });
+	    }, false);
+	  })();
+    
+	// Mostrar/ocultar campos adicionales
+	  document.getElementById('checkCondicion').addEventListener('change', function() {
+	    var collapseCondicion = document.getElementById('collapseCondicion');
+	    var bsCollapse = new bootstrap.Collapse(collapseCondicion, {
+	      toggle: false
+	    });
+	    this.checked ? bsCollapse.show() : bsCollapse.hide();
+	  });
+
+	  document.getElementById('checkEmergencia').addEventListener('change', function() {
+	    var collapseEmergencia = document.getElementById('collapseEmergencia');
+	    var bsCollapse = new bootstrap.Collapse(collapseEmergencia, {
+	      toggle: false
+	    });
+	    this.checked ? bsCollapse.show() : bsCollapse.hide();
+	  });
+	</script>
+</body>
+</html>
