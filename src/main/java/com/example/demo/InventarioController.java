@@ -1,15 +1,14 @@
 package com.example.demo;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.example.demo.entidades.Producto;
 import com.example.demo.repository.ProductoRepository;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/Inventario")
@@ -21,21 +20,84 @@ public class InventarioController {
         this.productoRepository = productoRepository;
     }
 
-	@GetMapping
+    // Mostrar todos los productos
+    @GetMapping
     public String mostrarInventario(Model model) {
         model.addAttribute("productos", productoRepository.findAll());
-        return "inventario"; // nombre del archivo .html sin extensión
+        return "inventario";
     }
 
+    // Agregar nuevo producto
     @PostMapping("/agregar")
-    public String agregarProducto1(@RequestParam("nombre") String nombre,
-                                  @RequestParam("cantidad") int cantidad,
-                                  @RequestParam("precio") double precio) {
+    public String agregarProducto(@RequestParam String nombre,
+                                  @RequestParam int cantidad,
+                                  @RequestParam double precio,
+                                  @RequestParam String descripcion,
+                                  @RequestParam String categoria) {
+
         Producto nuevoProducto = new Producto();
         nuevoProducto.setNombre(nombre);
         nuevoProducto.setCantidad(cantidad);
         nuevoProducto.setPrecio(precio);
+        nuevoProducto.setDescripcion(descripcion);
+        nuevoProducto.setCategoria(categoria);
+        nuevoProducto.setFechaIngreso(LocalDate.now());
+
         productoRepository.save(nuevoProducto);
+        return "redirect:/Inventario";
+    }
+
+    // Eliminar producto por ID
+    @PostMapping("/eliminar")
+    public String eliminarProducto(@RequestParam("id") Long id) {
+        productoRepository.deleteById(id);
+        return "redirect:/Inventario";
+    }
+
+
+    // Ver detalles de un producto
+    @GetMapping("/detalles")
+    public String verDetalles(@RequestParam Long id, Model model) {
+        Optional<Producto> producto = productoRepository.findById(id);
+        if (producto.isPresent()) {
+            model.addAttribute("producto", producto.get());
+            return "detalle_producto"; // crea este HTML
+        } else {
+            return "redirect:/Inventario";
+        }
+    }
+
+    // Mostrar formulario para editar
+    @GetMapping("/editar")
+    public String mostrarEdicion(@RequestParam Long id, Model model) {
+        Optional<Producto> producto = productoRepository.findById(id);
+        if (producto.isPresent()) {
+            model.addAttribute("producto", producto.get());
+            return "editar_producto"; // crea este HTML
+        } else {
+            return "redirect:/Inventario";
+        }
+    }
+    @PostMapping("/editar")
+    public String editarProducto(@RequestParam("id") Long id,
+                                 @RequestParam("nombre") String nombre,
+                                 @RequestParam("cantidad") int cantidad,
+                                 @RequestParam("precio") double precio) {
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if (producto != null) {
+            producto.setNombre(nombre);
+            producto.setCantidad(cantidad);
+            producto.setPrecio(precio);
+            productoRepository.save(producto);
+        }
+        return "redirect:/Inventario";
+    }
+
+
+    // Guardar cambios después de editar
+    @PostMapping("/actualizar")
+    public String actualizarProducto(@ModelAttribute Producto producto) {
+        productoRepository.save(producto);
         return "redirect:/Inventario";
     }
 }
