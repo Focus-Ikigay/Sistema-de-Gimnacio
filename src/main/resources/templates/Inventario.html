@@ -370,23 +370,19 @@
                         <span th:if="${prod.cantidad > 15}" class="badge bg-success">Stock Normal</span>
                       </td>
                       <td>
-                        <td>
-					    <div class="btn-group" role="group">
-					        <button type="button" class="btn btn-sm btn-outline-primary" title="Ver detalles">
-					            <i class="fas fa-eye"></i>
-					        </button>
-					        <button type="button" class="btn btn-sm btn-outline-warning" title="Editar">
-					            <i class="fas fa-edit"></i>
-					        </button>
-					        <form th:action="@{/Inventario/eliminar}" method="post" style="display: inline;">
-					            <input type="hidden" name="id" th:value="${prod.id}">
-					            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
-					                <i class="fas fa-trash"></i>
-					            </button>
-					        </form>
-					    </div>
-					</td>
-					</tr>
+                        <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-sm btn-outline-primary" title="Ver detalles">
+                            <i class="fas fa-eye"></i>
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-warning" title="Editar">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
                     <tr th:if="${#lists.isEmpty(productos)}">
                       <td colspan="6" class="text-center text-muted py-4">
                         <i class="fas fa-box-open fa-2x mb-2"></i><br>
