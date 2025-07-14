@@ -23,7 +23,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     
     // Conector MySQL
-    implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("com.mysql:mysql-connector-j:8.3.0")
     
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -33,8 +33,13 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.14.0")
     implementation("org.apache.poi:poi:5.2.5")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 }
 
+// AÑADE ESTE BLOQUE PARA ACTIVAR EL FLAG -parameters
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.add("-parameters")
+}
 
 tasks.withType<Test> {
 	useJUnitPlatform()

@@ -27,46 +27,68 @@ public class MovimientoFinanciero {
         Ingreso, Gasto
     }
 
-	public Long getId() {
-		return id;
-	}
+    // Constructores
+    public MovimientoFinanciero() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public MovimientoFinanciero(LocalDate fecha, String descripcion, Tipo tipo, double monto) {
+        this.fecha = fecha;
+        this.descripcion = descripcion;
+        this.tipo = tipo;
+        this.monto = monto;
+    }
 
-	public LocalDate getFecha() {
-		return fecha;
-	}
+    // Getters y Setters
+    public Long getId() {
+        return id;
+    }
 
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getDescripcion() {
-		return descripcion;
-	}
+    public LocalDate getFecha() {
+        return fecha;
+    }
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
 
-	public Tipo getTipo() {
-		return tipo;
-	}
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-	public void setTipo(Tipo tipo) {
-		this.tipo = tipo;
-	}
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
-	public double getMonto() {
-		return monto;
-	}
+    public Tipo getTipo() {
+        return tipo;
+    }
 
-	public void setMonto(double monto) {
-		this.monto = monto;
-	}
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
 
+    public double getMonto() {
+        return monto;
+    }
 
+    public void setMonto(double monto) {
+        this.monto = monto;
+    }
+
+    // Método toString para facilitar la depuración
+    @Override
+    public String toString() {
+        return "MovimientoFinanciero{" +
+                "id=" + id +
+                ", fecha=" + fecha +
+                ", descripcion='" + descripcion + '\'' +
+                ", tipo=" + tipo +
+                ", monto=" + monto +
+                '}';
+    }
 }
 

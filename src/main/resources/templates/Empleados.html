@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{empleados.titulo}">Gestión de Empleados - Home Fitness</title>
+    <title>Gestión de Empleados - Home Fitness</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
@@ -37,6 +38,23 @@
             font-size: 0.8rem;
             padding: 0.35em 0.65em;
         }
+        
+        .entrenador-bg {
+            background-color: #4e73df;
+        }
+        
+        .recepcion-bg {
+            background-color: #1cc88a;
+        }
+        
+        .limpieza-bg {
+            background-color: #6c757d;
+        }
+        
+        .administrativo-bg {
+            background-color: #f6c23e;
+            color: #000;
+        }
     </style>
 </head>
 <body class="d-flex flex-column">
@@ -44,9 +62,9 @@
 <!-- NAVBAR superior -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand d-flex align-items-center" th:href="@{/principal.html}">
+    <a class="navbar-brand d-flex align-items-center" href="/principal">
       <i class="fas fa-dumbbell me-2"></i>
-      <span th:text="#{nav.logo}">Home Fitness</span>
+      <span>Home Fitness</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
       <span class="navbar-toggler-icon"></span>
@@ -54,9 +72,9 @@
 
     <div class="collapse navbar-collapse" id="navbarContent">
       <!-- Buscador -->
-      <form class="d-flex ms-auto me-3">
+      <form class="d-flex ms-auto me-3" action="/empleados" method="get">
         <div class="input-group">
-          <input class="form-control" type="search" th:placeholder="#{nav.buscador.placeholder}" aria-label="Buscar">
+          <input class="form-control" type="search" name="busqueda" placeholder="Buscar" aria-label="Buscar">
           <button class="btn btn-outline-light" type="submit">
             <i class="fas fa-search"></i>
           </button>
@@ -74,28 +92,28 @@
             </span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacionesDropdown">
-            <li><h6 class="dropdown-header" th:text="#{nav.notificaciones.titulo}">Centro de Notificaciones</h6></li>
+            <li><h6 class="dropdown-header">Centro de Notificaciones</h6></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-user-plus me-2 text-primary"></i><span th:text="#{nav.notificaciones.nuevo_cliente}">Nuevo registro de cliente</span></a></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-exclamation-triangle me-2 text-warning"></i><span th:text="#{nav.notificaciones.stock_bajo}">Stock bajo de proteínas</span></a></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-dollar-sign me-2 text-success"></i><span th:text="#{nav.notificaciones.nuevo_pago}">Nuevo pago recibido</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-user-plus me-2 text-primary"></i>Nuevo registro de cliente</a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-exclamation-triangle me-2 text-warning"></i>Stock bajo de proteínas</a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-dollar-sign me-2 text-success"></i>Nuevo pago recibido</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-center small" href="#" th:text="#{nav.notificaciones.ver_todas}">Mostrar todas las notificaciones</a></li>
+            <li><a class="dropdown-item text-center small" href="#">Mostrar todas las notificaciones</a></li>
           </ul>
         </li>
 
         <!-- Perfil -->
         <li class="nav-item dropdown profile-dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="perfilDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="me-2 d-none d-lg-inline text-white small" th:text="#{nav.usuario}">Admin</span>
+            <span class="me-2 d-none d-lg-inline text-white small">Admin</span>
             <i class="fas fa-user-circle fa-lg"></i>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="perfilDropdown">
-            <li><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm me-2 text-gray-400"></i><span th:text="#{nav.perfil.perfil}">Perfil</span></a></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm me-2 text-gray-400"></i><span th:text="#{nav.perfil.configuracion}">Configuración</span></a></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm me-2 text-gray-400"></i><span th:text="#{nav.perfil.registro}">Registro actividad</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm me-2 text-gray-400"></i>Perfil</a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm me-2 text-gray-400"></i>Configuración</a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm me-2 text-gray-400"></i>Registro actividad</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm me-2 text-gray-400"></i><span th:text="#{nav.perfil.cerrar_sesion}">Cerrar sesión</span></a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm me-2 text-gray-400"></i>Cerrar sesión</a></li>
           </ul>
         </li>
       </ul>
@@ -111,70 +129,70 @@
     <div class="col-lg-2 px-0 d-none d-lg-block">
       <div class="sidebar py-3">
         <div class="text-center my-4">
-          <img src="https://via.placeholder.com/60" alt="Logo" class="rounded-circle mb-2">
-          <h6 class="text-white mb-0" th:text="#{sidebar.titulo}">Sistema de Gestión</h6>
+          <img src="/imagenes/logo.png" alt="Logo" style="width: 60px; height: 60px;" class="rounded-circle mb-2">
+          <h6 class="text-white mb-0">Sistema de Gestión</h6>
         </div>
 
         <hr class="bg-light mx-3">
 
         <ul class="nav flex-column mt-2">
           <li class="nav-item">
-            <a class="nav-link sidebar-item" href="/principal.html">
+            <a class="nav-link sidebar-item" href="/principal">
               <i class="fas fa-fw fa-tachometer-alt me-2"></i>
-              <span th:text="#{sidebar.dashboard}">Dashboard</span>
+              <span>Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link sidebar-item" href="/Registro_Cliente">
+            <a class="nav-link sidebar-item" href="/registro_cliente">
               <i class="fas fa-fw fa-user-plus me-2"></i>
-              <span th:text="#{sidebar.registro_cliente}">Registro Cliente</span>
+              <span>Registro Cliente</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link sidebar-item" href="/Pago_entrada">
+            <a class="nav-link sidebar-item" href="/pagos">
               <i class="fas fa-fw fa-money-bill me-2"></i>
-              <span th:text="#{sidebar.pagos_entrada}">Pagos Entrada</span>
+              <span>Pagos Entrada</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link sidebar-item" href="/Asignar_menbresia">
+            <a class="nav-link sidebar-item" href="/membresias">
               <i class="fas fa-fw fa-id-card me-2"></i>
-              <span th:text="#{sidebar.membresias}">Membresías</span>
+              <span>Membresías</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link sidebar-item" href="/Inventario">
+            <a class="nav-link sidebar-item" href="/inventario">
               <i class="fas fa-fw fa-boxes me-2"></i>
-              <span th:text="#{sidebar.inventario}">Inventario</span>
+              <span>Inventario</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link sidebar-item" href="/finanzas">
               <i class="fas fa-fw fa-chart-line me-2"></i>
-              <span th:text="#{sidebar.finanzas}">Finanzas</span>
+              <span>Finanzas</span>
             </a>
           </li>
 
           <li class="nav-item mt-3">
             <hr class="bg-light mx-3">
-            <h6 class="text-white-50 small px-3 mb-2" th:text="#{sidebar.herramientas}">HERRAMIENTAS</h6>
+            <h6 class="text-white-50 small px-3 mb-2">HERRAMIENTAS</h6>
           </li>
           <li class="nav-item">
-            <a class="nav-link sidebar-item" href="#">
+            <a class="nav-link sidebar-item" href="/">
               <i class="fas fa-fw fa-calendar me-2"></i>
-              <span th:text="#{sidebar.agenda}">Agenda</span>
+              <span>Agenda</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link sidebar-item active" href="#">
+            <a class="nav-link sidebar-item active" href="/empleados">
               <i class="fas fa-fw fa-users me-2"></i>
-              <span th:text="#{sidebar.empleados}">Empleados</span>
+              <span>Empleados</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link sidebar-item" href="#">
+            <a class="nav-link sidebar-item" href="/">
               <i class="fas fa-fw fa-cog me-2"></i>
-              <span th:text="#{sidebar.configuracion}">Configuración</span>
+              <span>Configuración</span>
             </a>
           </li>
         </ul>
@@ -188,42 +206,42 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="text-primary">
             <i class="fas fa-users me-2"></i>
-            <span th:text="#{empleados.titulo}">Gestión de Empleados</span>
+            <span>Gestión de Empleados</span>
           </h2>
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoEmpleadoModal">
+          <button class="btn btn-primary" id="btnNuevoEmpleado" type="button">
             <i class="fas fa-user-plus me-1"></i>
-            <span th:text="#{empleados.boton.nuevo}">Nuevo Empleado</span>
+            <span>Nuevo Empleado</span>
           </button>
         </div>
 
         <!-- Filtros -->
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
-            <form>
+            <form action="/empleados" method="get">
               <div class="row g-3">
                 <div class="col-md-4">
-                  <label for="filtroRol" class="form-label" th:text="#{empleados.filtro.rol}">Rol</label>
-                  <select class="form-select" id="filtroRol">
-                    <option value="" selected th:text="#{empleados.filtro.todos}">Todos</option>
-                    <option value="entrenador" th:text="#{empleados.roles.entrenador}">Entrenador</option>
-                    <option value="recepcion" th:text="#{empleados.roles.recepcion}">Recepcionista</option>
-                    <option value="limpieza" th:text="#{empleados.roles.limpieza}">Limpieza</option>
-                    <option value="administrativo" th:text="#{empleados.roles.administrativo}">Administrativo</option>
+                  <label for="filtroRol" class="form-label">Rol</label>
+                  <select class="form-select" id="filtroRol" name="rol">
+                    <option value="">Todos</option>
+                    <option value="ENTRENADOR">Entrenador</option>
+                    <option value="RECEPCION">Recepcionista</option>
+                    <option value="LIMPIEZA">Limpieza</option>
+                    <option value="ADMINISTRATIVO">Administrativo</option>
                   </select>
                 </div>
                 <div class="col-md-4">
-                  <label for="filtroEstado" class="form-label" th:text="#{empleados.filtro.estado}">Estado</label>
-                  <select class="form-select" id="filtroEstado">
-                    <option value="" selected th:text="#{empleados.filtro.todos}">Todos</option>
-                    <option value="activo" th:text="#{empleados.estados.activo}">Activo</option>
-                    <option value="inactivo" th:text="#{empleados.estados.inactivo}">Inactivo</option>
-                    <option value="vacaciones" th:text="#{empleados.estados.vacaciones}">Vacaciones</option>
+                  <label for="filtroEstado" class="form-label">Estado</label>
+                  <select class="form-select" id="filtroEstado" name="estado">
+                    <option value="">Todos</option>
+                    <option value="ACTIVO">Activo</option>
+                    <option value="INACTIVO">Inactivo</option>
+                    <option value="VACACIONES">Vacaciones</option>
                   </select>
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
                   <button type="submit" class="btn btn-outline-primary w-100">
                     <i class="fas fa-filter me-1"></i>
-                    <span th:text="#{empleados.boton.filtrar}">Filtrar</span>
+                    <span>Filtrar</span>
                   </button>
                 </div>
               </div>
@@ -231,197 +249,85 @@
           </div>
         </div>
 
-        <!-- Tarjetas de empleados -->
-        <div class="row">
-          <!-- Entrenador 1 -->
-          <div class="col-md-6 col-lg-4 mb-4">
+        <!-- Mensajes de éxito/error -->
+        <!-- Estos divs se mostrarán/ocultarán y su contenido se establecerá mediante JavaScript -->
+        <div id="successMessage" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+          <span></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+        <div id="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+          <span></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Tarjetas de empleados (Este bloque se llenará dinámicamente con JavaScript o con datos de Thymeleaf si aún lo usas para la lista) -->
+        <div class="row" id="empleadosContainer">
+          <!-- Ejemplo de tarjeta de empleado (se repite dinámicamente) -->
+          <!-- Si estás usando Thymeleaf para renderizar la lista, mantén el th:each. Si no, deberás llenar esto con JS -->
+          <!-- Para este ejemplo, asumo que la lista de empleados se sigue pasando desde el backend y se renderiza con Thymeleaf,
+               pero las referencias de internacionalización dentro de cada tarjeta se han eliminado. -->
+          <div class="col-md-6 col-lg-4 mb-4" th:each="empleado : ${empleados}">
             <div class="card empleado-card h-100">
-              <div class="card-header bg-primary text-white">
+              <div class="card-header text-white" th:classappend="${empleado.rol.name() == 'ENTRENADOR'} ? 'entrenador-bg' : 
+                                                                    (${empleado.rol.name() == 'RECEPCION'} ? 'recepcion-bg' : 
+                                                                    (${empleado.rol.name() == 'LIMPIEZA'} ? 'limpieza-bg' : 
+                                                                    'administrativo-bg'))">
                 <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0">María González</h5>
-                  <span class="badge bg-light text-dark badge-role" th:text="#{empleados.roles.entrenador}">Entrenador</span>
+                  <h5 class="mb-0" th:text="${empleado.nombreCompleto}">Nombre Empleado</h5>
+                  <span class="badge bg-light text-dark badge-role" th:text="${empleado.rol.name()}">Rol</span>
                 </div>
               </div>
               <div class="card-body">
                 <div class="text-center mb-3">
-                  <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Foto perfil">
+                  <img th:src="${empleado.foto != null} ? ${empleado.foto} : 'https://via.placeholder.com/100'" class="rounded-circle" alt="Foto perfil" width="100" height="100">
                 </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.dni}">DNI:</strong> 76543210
+                    <strong>DNI:</strong> <span th:text="${empleado.dni}">76543210</span>
                   </li>
                   <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.telefono}">Teléfono:</strong> 987654321
+                    <strong>Teléfono:</strong> <span th:text="${empleado.telefono}">987654321</span>
                   </li>
                   <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.correo}">Correo:</strong> maria.gonzalez@example.com
+                    <strong>Correo:</strong> <span th:text="${empleado.correo}">correo@example.com</span>
                   </li>
                   <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.estado}">Estado:</strong> 
-                    <span class="badge bg-success" th:text="#{empleados.estados.activo}">Activo</span>
+                    <strong>Estado:</strong> 
+                    <span class="badge" th:classappend="${empleado.estado.name() == 'ACTIVO'} ? 'bg-success' : 
+                                                       (${empleado.estado.name() == 'INACTIVO'} ? 'bg-danger' : 
+                                                       'bg-warning text-dark')"
+                          th:text="${empleado.estado.name()}">Estado</span>
                   </li>
                 </ul>
               </div>
               <div class="card-footer bg-transparent">
                 <div class="d-flex justify-content-between">
-                  <button class="btn btn-sm btn-outline-primary">
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#empleadoModal"
+                          th:onclick="|cargarEmpleadoParaEditar(${empleado.id});|">
                     <i class="fas fa-eye"></i>
-                    <span th:text="#{empleados.boton.ver}">Ver</span>
+                    <span>Ver</span>
                   </button>
-                  <button class="btn btn-sm btn-outline-warning">
+                  <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#empleadoModal"
+                          th:onclick="|cargarEmpleadoParaEditar(${empleado.id});|">
                     <i class="fas fa-edit"></i>
-                    <span th:text="#{empleados.boton.editar}">Editar</span>
+                    <span>Editar</span>
                   </button>
-                  <button class="btn btn-sm btn-outline-danger">
+                  <a class="btn btn-sm btn-outline-danger" th:href="@{/empleados/eliminar/{id}(id=${empleado.id})}" 
+                     onclick="return confirm('¿Estás seguro de eliminar este empleado?');">
                     <i class="fas fa-trash-alt"></i>
-                    <span th:text="#{empleados.boton.eliminar}">Eliminar</span>
-                  </button>
+                    <span>Eliminar</span>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Recepcionista -->
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card empleado-card h-100">
-              <div class="card-header bg-info text-white">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0">Carlos Mendoza</h5>
-                  <span class="badge bg-light text-dark badge-role" th:text="#{empleados.roles.recepcion}">Recepcionista</span>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="text-center mb-3">
-                  <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Foto perfil">
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.dni}">DNI:</strong> 87654321
-                  </li>
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.telefono}">Teléfono:</strong> 987654322
-                  </li>
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.correo}">Correo:</strong> carlos.mendoza@example.com
-                  </li>
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.estado}">Estado:</strong> 
-                    <span class="badge bg-success" th:text="#{empleados.estados.activo}">Activo</span>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-footer bg-transparent">
-                <div class="d-flex justify-content-between">
-                  <button class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-eye"></i>
-                    <span th:text="#{empleados.boton.ver}">Ver</span>
-                  </button>
-                  <button class="btn btn-sm btn-outline-warning">
-                    <i class="fas fa-edit"></i>
-                    <span th:text="#{empleados.boton.editar}">Editar</span>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger">
-                    <i class="fas fa-trash-alt"></i>
-                    <span th:text="#{empleados.boton.eliminar}">Eliminar</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Limpieza -->
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card empleado-card h-100">
-              <div class="card-header bg-secondary text-white">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0">Rosa Huamán</h5>
-                  <span class="badge bg-light text-dark badge-role" th:text="#{empleados.roles.limpieza}">Limpieza</span>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="text-center mb-3">
-                  <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Foto perfil">
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.dni}">DNI:</strong> 98765432
-                  </li>
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.telefono}">Teléfono:</strong> 987654323
-                  </li>
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.correo}">Correo:</strong> rosa.huaman@example.com
-                  </li>
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.estado}">Estado:</strong> 
-                    <span class="badge bg-warning text-dark" th:text="#{empleados.estados.vacaciones}">Vacaciones</span>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-footer bg-transparent">
-                <div class="d-flex justify-content-between">
-                  <button class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-eye"></i>
-                    <span th:text="#{empleados.boton.ver}">Ver</span>
-                  </button>
-                  <button class="btn btn-sm btn-outline-warning">
-                    <i class="fas fa-edit"></i>
-                    <span th:text="#{empleados.boton.editar}">Editar</span>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger">
-                    <i class="fas fa-trash-alt"></i>
-                    <span th:text="#{empleados.boton.eliminar}">Eliminar</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Entrenador 2 -->
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card empleado-card h-100">
-              <div class="card-header bg-primary text-white">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0">Juan Pérez</h5>
-                  <span class="badge bg-light text-dark badge-role" th:text="#{empleados.roles.entrenador}">Entrenador</span>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="text-center mb-3">
-                  <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Foto perfil">
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.dni}">DNI:</strong> 87654321
-                  </li>
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.telefono}">Teléfono:</strong> 987654324
-                  </li>
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.correo}">Correo:</strong> juan.perez@example.com
-                  </li>
-                  <li class="list-group-item">
-                    <strong th:text="#{empleados.detalle.estado}">Estado:</strong> 
-                    <span class="badge bg-danger" th:text="#{empleados.estados.inactivo}">Inactivo</span>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-footer bg-transparent">
-                <div class="d-flex justify-content-between">
-                  <button class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-eye"></i>
-                    <span th:text="#{empleados.boton.ver}">Ver</span>
-                  </button>
-                  <button class="btn btn-sm btn-outline-warning">
-                    <i class="fas fa-edit"></i>
-                    <span th:text="#{empleados.boton.editar}">Editar</span>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger">
-                    <i class="fas fa-trash-alt"></i>
-                    <span th:text="#{empleados.boton.eliminar}">Eliminar</span>
-                  </button>
-                </div>
-              </div>
+          
+          <!-- Mensaje cuando no hay empleados -->
+          <div class="col-12" th:if="${#lists.isEmpty(empleados)}">
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle me-2"></i>
+              <span>No se encontraron empleados con los criterios especificados.</span>
             </div>
           </div>
         </div>
@@ -430,78 +336,220 @@
   </div>
 </div>
 
-<!-- Modal Nuevo Empleado -->
-<div class="modal fade" id="nuevoEmpleadoModal" tabindex="-1" aria-labelledby="nuevoEmpleadoModalLabel" aria-hidden="true">
+<!-- Modal para Nuevo/Editar Empleado -->
+<div class="modal fade" id="empleadoModal" tabindex="-1" aria-labelledby="empleadoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="nuevoEmpleadoModalLabel" th:text="#{empleados.modal.titulo}">Registrar Nuevo Empleado</h5>
+        <h5 class="modal-title" id="empleadoModalLabel">Nuevo Empleado</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form>
+      <form action="/empleados/guardar" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="id">
+
           <div class="row g-3">
             <div class="col-md-6">
-              <label for="nuevoDni" class="form-label" th:text="#{empleados.detalle.dni}">DNI</label>
-              <input type="text" class="form-control" id="nuevoDni" required>
+              <label for="dni" class="form-label">DNI</label>
+              <input type="text" class="form-control" id="dni" name="dni" required>
+              <div class="invalid-feedback"></div>
             </div>
             <div class="col-md-6">
-              <label for="nuevoNombre" class="form-label" th:text="#{empleados.detalle.nombre}">Nombre Completo</label>
-              <input type="text" class="form-control" id="nuevoNombre" required>
+              <label for="nombreCompleto" class="form-label">Nombre Completo</label>
+              <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto" required>
+              <div class="invalid-feedback"></div>
             </div>
             <div class="col-md-6">
-              <label for="nuevoTelefono" class="form-label" th:text="#{empleados.detalle.telefono}">Teléfono</label>
-              <input type="tel" class="form-control" id="nuevoTelefono">
+              <label for="telefono" class="form-label">Teléfono</label>
+              <input type="tel" class="form-control" id="telefono" name="telefono">
+              <div class="invalid-feedback"></div>
             </div>
             <div class="col-md-6">
-              <label for="nuevoCorreo" class="form-label" th:text="#{empleados.detalle.correo}">Correo Electrónico</label>
-              <input type="email" class="form-control" id="nuevoCorreo">
+              <label for="correo" class="form-label">Correo Electrónico</label>
+              <input type="email" class="form-control" id="correo" name="correo">
+              <div class="invalid-feedback"></div>
             </div>
             <div class="col-md-6">
-              <label for="nuevoRol" class="form-label" th:text="#{empleados.detalle.rol}">Rol</label>
-              <select class="form-select" id="nuevoRol" required>
-                <option value="" selected disabled th:text="#{empleados.filtro.seleccionar}">Seleccionar...</option>
-                <option value="entrenador" th:text="#{empleados.roles.entrenador}">Entrenador</option>
-                <option value="recepcion" th:text="#{empleados.roles.recepcion}">Recepcionista</option>
-                <option value="limpieza" th:text="#{empleados.roles.limpieza}">Limpieza</option>
-                <option value="administrativo" th:text="#{empleados.roles.administrativo}">Administrativo</option>
+              <label for="rol" class="form-label">Rol</label>
+              <select class="form-select" id="rol" name="rol" required>
+                <option value="" disabled>Seleccionar...</option>
+                <option value="ENTRENADOR">Entrenador</option>
+                <option value="RECEPCION">Recepcionista</option>
+                <option value="LIMPIEZA">Limpieza</option>
+                <option value="ADMINISTRATIVO">Administrativo</option>
               </select>
+              <div class="invalid-feedback"></div>
             </div>
             <div class="col-md-6">
-              <label for="nuevoEstado" class="form-label" th:text="#{empleados.detalle.estado}">Estado</label>
-              <select class="form-select" id="nuevoEstado" required>
-                <option value="activo" selected th:text="#{empleados.estados.activo}">Activo</option>
-                <option value="inactivo" th:text="#{empleados.estados.inactivo}">Inactivo</option>
-                <option value="vacaciones" th:text="#{empleados.estados.vacaciones}">Vacaciones</option>
+              <label for="estado" class="form-label">Estado</label>
+              <select class="form-select" id="estado" name="estado" required>
+                <option value="ACTIVO">Activo</option>
+                <option value="INACTIVO">Inactivo</option>
+                <option value="VACACIONES">Vacaciones</option>
               </select>
+              <div class="invalid-feedback"></div>
             </div>
             <div class="col-12">
-              <label for="nuevoDireccion" class="form-label" th:text="#{empleados.detalle.direccion}">Dirección</label>
-              <input type="text" class="form-control" id="nuevoDireccion">
+              <label for="direccion" class="form-label">Dirección</label>
+              <input type="text" class="form-control" id="direccion" name="direccion">
+              <div class="invalid-feedback"></div>
             </div>
             <div class="col-md-6">
-              <label for="nuevoFechaNacimiento" class="form-label" th:text="#{empleados.detalle.fecha_nacimiento}">Fecha de Nacimiento</label>
-              <input type="date" class="form-control" id="nuevoFechaNacimiento">
+              <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+              <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento">
+              <div class="invalid-feedback"></div>
             </div>
             <div class="col-md-6">
-              <label for="nuevoFechaIngreso" class="form-label" th:text="#{empleados.detalle.fecha_ingreso}">Fecha de Ingreso</label>
-              <input type="date" class="form-control" id="nuevoFechaIngreso">
+              <label for="fechaIngreso" class="form-label">Fecha de Ingreso</label>
+              <input type="date" class="form-control" id="fechaIngreso" name="fechaIngreso" required>
+              <div class="invalid-feedback"></div>
             </div>
+           
             <div class="col-12">
-              <label for="nuevoObservaciones" class="form-label" th:text="#{empleados.detalle.observaciones}">Observaciones</label>
-              <textarea class="form-control" id="nuevoObservaciones" rows="3"></textarea>
+              <label for="observaciones" class="form-label">Observaciones</label>
+              <textarea class="form-control" id="observaciones" name="observaciones" rows="3"></textarea>
             </div>
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{empleados.boton.cancelar}">Cancelar</button>
-        <button type="button" class="btn btn-primary" th:text="#{empleados.boton.guardar}">Guardar</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script> 
+// Versión completa y optimizada del script para gestión de empleados
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Inicialización del modal (una sola instancia)
+    const empleadoModalElement = document.getElementById('empleadoModal');
+    const empleadoModal = new bootstrap.Modal(empleadoModalElement);
+    
+    // 2. Configuración del botón "Nuevo Empleado"
+    const btnNuevoEmpleado = document.getElementById('btnNuevoEmpleado');
+    if (btnNuevoEmpleado) {
+        btnNuevoEmpleado.addEventListener('click', function(e) {
+            e.preventDefault();
+            resetForm();
+            empleadoModal.show();
+        });
+    }
+    
+    // 3. Validación del formulario
+    const form = document.querySelector('#empleadoModal form');
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    }
+    
+    // 4. Limpieza al cerrar el modal
+    empleadoModalElement.addEventListener('hidden.bs.modal', function() {
+        const form = this.querySelector('form');
+        if (form) {
+            form.classList.remove('was-validated');
+        }
+    });
+    
+    // 5. Configuración de los botones de edición (si existen)
+    document.querySelectorAll('[data-bs-target="#empleadoModal"][onclick*="cargarEmpleadoParaEditar"]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.getAttribute('onclick').match(/cargarEmpleadoParaEditar\((\d+)\)/)[1];
+            if (id) cargarEmpleadoParaEditar(id);
+        });
+    });
+});
+
+/**
+ * Función para resetear el formulario del modal
+ */
+function resetForm() {
+    try {
+        const form = document.querySelector('#empleadoModal form');
+        if (!form) throw new Error("Formulario no encontrado");
+        
+        form.reset();
+        document.getElementById('empleadoModalLabel').textContent = 'Nuevo Empleado';
+        
+        const idField = form.querySelector('input[name="id"]');
+        if (idField) idField.value = '';
+        
+        // Limpiar clases de validación
+        form.classList.remove('was-validated');
+        
+        // Limpiar mensajes de error
+        const invalidFeedbacks = form.querySelectorAll('.invalid-feedback');
+        invalidFeedbacks.forEach(el => el.style.display = 'none');
+        
+    } catch (error) {
+        console.error("Error en resetForm:", error);
+        alert("Error al preparar el formulario. Ver consola para detalles.");
+    }
+}
+
+/**
+ * Función para cargar datos de empleado en el modal (edición)
+ * @param {number} id - ID del empleado a editar
+ */
+function cargarEmpleadoParaEditar(id) {
+    try {
+        fetch(`/empleados/obtener/${id}`)
+            .then(response => {
+                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                const formatDate = (dateString) => {
+                    if (!dateString) return '';
+                    const date = new Date(dateString);
+                    return date.toISOString().split('T')[0];
+                };
+
+                const form = document.querySelector('#empleadoModal form');
+                if (form) {
+                    // Llenar campos del formulario
+                    form.querySelector('input[name="id"]').value = data.id || '';
+                    form.querySelector('input[name="dni"]').value = data.dni || '';
+                    form.querySelector('input[name="nombreCompleto"]').value = data.nombreCompleto || '';
+                    form.querySelector('input[name="telefono"]').value = data.telefono || '';
+                    form.querySelector('input[name="correo"]').value = data.correo || '';
+                    form.querySelector('select[name="rol"]').value = data.rol || '';
+                    form.querySelector('select[name="estado"]').value = data.estado || 'ACTIVO';
+                    form.querySelector('input[name="direccion"]').value = data.direccion || '';
+                    form.querySelector('input[name="fechaNacimiento"]').value = formatDate(data.fechaNacimiento);
+                    form.querySelector('input[name="fechaIngreso"]').value = formatDate(data.fechaIngreso);
+                    form.querySelector('textarea[name="observaciones"]').value = data.observaciones || '';
+                    
+                    // Cambiar título del modal
+                    document.getElementById('empleadoModalLabel').textContent = 'Editar Empleado';
+                    
+                    // Mostrar modal
+                    const empleadoModal = new bootstrap.Modal(document.getElementById('empleadoModal'));
+                    empleadoModal.show();
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar empleado:', error);
+                alert('Error al cargar los datos del empleado. Ver consola para detalles.');
+            });
+    } catch (error) {
+        console.error('Error en cargarEmpleadoParaEditar:', error);
+        alert('Error al procesar la solicitud de edición.');
+    }
+}
+console.log("Modal y scripts cargados");
+console.log("btnNuevoEmpleado", document.getElementById('btnNuevoEmpleado'));
+
+</script>
 </body>
 </html>
+
