@@ -155,7 +155,7 @@
           <div class="card card-summary bg-success text-white shadow h-100">
             <div class="card-body">
               <h5 class="card-title">Total Ingresos</h5>
-              <p class="card-text h4" th:text="${'$' + #numbers.formatDecimal(totalIngresos, 1, 2, 'POINT')}">$0.00</p>
+              <p class="card-text h4" th:text="${'S/ ' + #numbers.formatDecimal(totalIngresos, 1, 2, 'POINT')}">S/ 0.00</p>
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@
           <div class="card card-summary bg-danger text-white shadow h-100">
             <div class="card-body">
               <h5 class="card-title">Total Gastos</h5>
-              <p class="card-text h4" th:text="${'$' + #numbers.formatDecimal(totalGastos, 1, 2, 'POINT')}">$0.00</p>
+              <p class="card-text h4" th:text="${'S/ ' + #numbers.formatDecimal(totalGastos, 1, 2, 'POINT')}">S/ 0.00</p>
             </div>
           </div>
         </div>
@@ -171,7 +171,7 @@
           <div class="card card-summary bg-primary text-white shadow h-100">
             <div class="card-body">
               <h5 class="card-title">Balance</h5>
-              <p class="card-text h4" th:text="${'$' + #numbers.formatDecimal(balance, 1, 2, 'POINT')}">$0.00</p>
+              <p class="card-text h4" th:text="${'S/ ' + #numbers.formatDecimal(balance, 1, 2, 'POINT')}">S/ 0.00</p>
             </div>
           </div>
         </div>
@@ -218,7 +218,8 @@
                 <span th:class="${movimiento.tipo == T(com.example.demo.entidades.MovimientoFinanciero.Tipo).Ingreso ? 'ingreso' : 'gasto'}"
                       th:text="${movimiento.tipo}">Tipo</span>
               </td>
-              <td th:text="${'$' + #numbers.formatDecimal(movimiento.monto, 1, 2, 'POINT')}">Monto</td>
+               <!-- cambio monto <td th:text="${'$' + #numbers.formatDecimal(movimiento.monto, 1, 2, 'POINT')}">Monto</td> -->
+              <td th:text="${'S/ ' + #numbers.formatDecimal(movimiento.monto, 1, 2, 'POINT')}">S/ 0.00</td>
             </tr>
             <tr th:if="${movimientos.empty}">
               <td colspan="4" class="text-center">No se encontraron movimientos</td>
