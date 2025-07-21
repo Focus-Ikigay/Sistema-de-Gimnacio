@@ -15,6 +15,9 @@ public class Empleado {
     @Column(nullable = false, unique = true, length = 8)
     private String dni;
     
+    @Column(nullable = false)
+    private String password;
+    
     @Column(name = "nombre_completo", nullable = false, length = 100)
     private String nombreCompleto;
     
@@ -37,12 +40,12 @@ public class Empleado {
     
     @Column(name = "fecha_nacimiento")
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd") // <-- Añadir esta línea
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaNacimiento;
     
     @Column(name = "fecha_ingreso", nullable = false)
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd") // <-- Añadir esta línea
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaIngreso;
     
     @Column(columnDefinition = "TEXT")
@@ -158,6 +161,14 @@ public class Empleado {
     
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     

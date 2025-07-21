@@ -1,8 +1,7 @@
-package com.example.demo;
+package com.example.demo.controlador;
 
 import com.example.demo.entidades.Producto;
 import com.example.demo.repository.ProductoRepository;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,60 +23,52 @@ public class InventarioController {
     @GetMapping
     public String mostrarInventario(Model model) {
         model.addAttribute("productos", productoRepository.findAll());
+        model.addAttribute("producto", new Producto()); // Necesario para el formulario modal
         return "inventario";
     }
 
     // Agregar nuevo producto
     @PostMapping("/agregar")
-    public String agregarProducto(@RequestParam String nombre,
-                                  @RequestParam int cantidad,
-                                  @RequestParam double precio,
-                                  @RequestParam String descripcion,
-                                  @RequestParam String categoria) {
-
-        Producto nuevoProducto = new Producto();
-        nuevoProducto.setNombre(nombre);
-        nuevoProducto.setCantidad(cantidad);
-        nuevoProducto.setPrecio(precio);
-        nuevoProducto.setDescripcion(descripcion);
-        nuevoProducto.setCategoria(categoria);
-        nuevoProducto.setFechaIngreso(LocalDate.now());
-
-        productoRepository.save(nuevoProducto);
+    public String agregarProducto(@ModelAttribute Producto producto) {
+        if (producto.getFechaIngreso() == null) {
+            producto.setFechaIngreso(LocalDate.now());
+        }
+        productoRepository.save(producto);
         return "redirect:/Inventario";
     }
 
-    // Eliminar producto por ID
+    // Eliminar producto
     @PostMapping("/eliminar")
     public String eliminarProducto(@RequestParam("id") Long id) {
         productoRepository.deleteById(id);
         return "redirect:/Inventario";
     }
 
-
-    // Ver detalles de un producto
+    // Ver detalles
     @GetMapping("/detalles")
     public String verDetalles(@RequestParam Long id, Model model) {
         Optional<Producto> producto = productoRepository.findById(id);
         if (producto.isPresent()) {
             model.addAttribute("producto", producto.get());
-            return "detalle_producto"; // crea este HTML
+            return "detalle_producto"; // Asegúrate de tener este HTML
         } else {
             return "redirect:/Inventario";
         }
     }
 
-    // Mostrar formulario para editar
+    // Mostrar formulario de edición
     @GetMapping("/editar")
     public String mostrarEdicion(@RequestParam Long id, Model model) {
         Optional<Producto> producto = productoRepository.findById(id);
         if (producto.isPresent()) {
             model.addAttribute("producto", producto.get());
-            return "editar_producto"; // crea este HTML
+            return "editar_producto"; // Asegúrate de tener este HTML
         } else {
             return "redirect:/Inventario";
         }
     }
+
+    // Editar producto (opcional, si lo haces en otra vista)
     @PostMapping("/editar")
     public String editarProducto(@RequestParam("id") Long id,
                                  @RequestParam("nombre") String nombre,
@@ -93,8 +84,7 @@ public class InventarioController {
         return "redirect:/Inventario";
     }
 
-
-    // Guardar cambios después de editar
+    // Actualizar producto con todos los campos (por si usas un formulario con @ModelAttribute)
     @PostMapping("/actualizar")
     public String actualizarProducto(@ModelAttribute Producto producto) {
         productoRepository.save(producto);

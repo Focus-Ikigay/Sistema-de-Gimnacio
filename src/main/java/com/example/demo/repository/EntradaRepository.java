@@ -41,4 +41,7 @@ public interface EntradaRepository extends JpaRepository<Entrada, Long> {
     
     // Obtener entradas ordenadas por fecha descendente
     List<Entrada> findAllByOrderByFechaDesc();
+    
+    @Query("SELECT e FROM Entrada e ORDER BY e.fecha DESC LIMIT 5")
+    List<Entrada> findTop5ByOrderByFechaDesc();
 }

@@ -8,12 +8,9 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 
-
-
 @Entity
 @Table(name = "cliente")
 public class Cliente {
-	
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

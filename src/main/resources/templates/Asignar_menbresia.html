@@ -28,7 +28,7 @@
 <!-- NAVBAR superior -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+    <a class="navbar-brand d-flex align-items-center" th:href="@{/principal}">
       <i class="fas fa-dumbbell me-2"></i>
       <span th:text="#{navbar.titulo}">Home Fitness</span>
     </a>
@@ -99,7 +99,7 @@
         <hr class="bg-light mx-3">
 
         <ul class="nav flex-column mt-2">
-          <li class="nav-item"><a class="nav-link sidebar-item" href="/"><i class="fas fa-fw fa-tachometer-alt me-2"></i><span th:text="#{menu.dashboard}">Dashboard</span></a></li>
+          <li class="nav-item"><a class="nav-link sidebar-item" href="/principal"><i class="fas fa-fw fa-tachometer-alt me-2"></i><span th:text="#{menu.dashboard}">Dashboard</span></a></li>
           <li class="nav-item"><a class="nav-link sidebar-item" href="/Registro_Cliente"><i class="fas fa-fw fa-user-plus me-2"></i><span th:text="#{menu.registro_cliente}">Registro Cliente</span></a></li>
           <li class="nav-item"><a class="nav-link sidebar-item" href="/Pago_entrada"><i class="fas fa-fw fa-money-bill me-2"></i><span th:text="#{menu.pagos}">Pagos Entrada</span></a></li>
           <li class="nav-item"><a class="nav-link sidebar-item" href="/Asignar_menbresia"><i class="fas fa-fw fa-id-card me-2"></i><span th:text="#{menu.membresias}">Membresías</span></a></li>

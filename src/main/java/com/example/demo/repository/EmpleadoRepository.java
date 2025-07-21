@@ -9,7 +9,8 @@ import java.util.List;
 
 @Repository
 public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
-    
+	Empleado findByDni(String dni);
+	
     // Buscar por rol
     List<Empleado> findByRol(Empleado.Rol rol);
     
