@@ -30,7 +30,8 @@ public class DashboardController {
     @Autowired
     private ClienteRepository clienteRepository;
     
-    @GetMapping("/dashboard")
+    // Maneja tanto la raíz como /principal
+    @GetMapping({"/"})
     public String mostrarDashboard(Model model) {
         // Resumen General
         model.addAttribute("ingresosMensuales", finanzasRepository.sumMontoByTipoAndFechaBetween(
@@ -46,9 +47,12 @@ public class DashboardController {
         // Clientes Recientes
         model.addAttribute("clientesRecientes", clienteRepository.findTop5ByOrderByFechaRegistroDesc());
         
+        // Entradas Recientes
+        model.addAttribute("entradasRecientes", entradaRepository.findTop5ByOrderByFechaDesc());
+        
         // Productos con Stock Bajo
         model.addAttribute("productosBajoStock", productoRepository.findByCantidadLessThan(10));
         
-        return "dashboard";
+        return "principal";
     }
 }
